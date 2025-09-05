@@ -8,7 +8,6 @@ interface IProps {
 }
 
 function NotesList({ folderId }: IProps) {
-  console.log(folderId);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
