@@ -5,8 +5,6 @@ import CreateNewFolderDialog from './LeftMenu/dialogs/CreateNewFolderDialog.tsx'
 import { useState } from 'react';
 import type { IItem } from '@components/LeftMenu/components/LeftMenuItem.tsx';
 
-// import { authActions } from '@/store/actions/authActions.ts';
-
 const INITIAL_ITEMS: IItem[] = [
   {
     id: '1',
@@ -22,15 +20,8 @@ function LeftMenu() {
   const [items, setItems] = useState(INITIAL_ITEMS);
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
-  const onCreateNewFolder = (folderName = '') => {
-    console.log('New folder name is', folderName);
-    // setItems((prevState) => {
-    //   const newItem: IItem = {
-    //     id: -1,
-    //     text: ''
-    //   };
-    //   return [...prevState, newItem];
-    // });
+  const onCreateNewFolder = () => {
+    // There will be logic to create a new folder here
   };
 
   return (

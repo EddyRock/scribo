@@ -9,8 +9,6 @@ import type { IRootState } from '@/store';
 function Notification() {
   const dispatch = useDispatch();
   const { notifications } = useSelector((state: IRootState) => state.notifications);
-  // TODO: Do small cleaning;
-  // TODO: Add a logo to the Signup page;
   const onHandleClose = (
     event: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,
