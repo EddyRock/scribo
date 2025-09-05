@@ -1,7 +1,13 @@
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 
 import '@style/index.css';
 
 import App from './App.tsx';
+import { store } from './store/index';
 
-createRoot(document.getElementById('root')!).render(<App />);
+createRoot(document.getElementById('root')!).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);

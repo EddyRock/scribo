@@ -5,6 +5,8 @@ import CreateNewFolderDialog from './LeftMenu/dialogs/CreateNewFolderDialog.tsx'
 import { useState } from 'react';
 import type { IItem } from '@components/LeftMenu/components/LeftMenuItem.tsx';
 
+// import { authActions } from '@/store/actions/authActions.ts';
+
 const INITIAL_ITEMS: IItem[] = [
   {
     id: '1',
@@ -32,7 +34,7 @@ function LeftMenu() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-between max-w-[250px] h-[100vh] border border-gray-200">
+    <div className="w-full flex flex-col items-center justify-between max-w-[250px] h-[100vh] border border-gray-200 border-t-0">
       <div>
         <LeftMenuSearch onUpdateSearch={setSearch} search={search} />
         <LeftMenuItems items={items} onSetSelectedItem={setSelectedItem} />

@@ -5,9 +5,6 @@ import { useParams } from 'react-router';
 
 function HomePage() {
   const { folderId = '' } = useParams();
-
-  console.log(folderId);
-
   return <>{folderId ? <NotesList folderId={folderId} /> : <EmptyPage />}</>;
 }
 
