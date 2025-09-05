@@ -1,26 +1,26 @@
 import { Card, CardContent, TextField, Button } from '@mui/material';
+import Logo from '@images/logo.png';
 
 import { useForm } from 'react-hook-form';
+import { useFirebase, useNotifications } from '@hooks/index';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+
+import type { IRootState } from '@/store';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import VALIDATIONS_FACTORY from '@/services/validations/validations-factory';
 
 import { Link } from 'react-router';
 
 const signUpSchema = z
   .object({
-    firstName: z.string().min(2).max(100),
-    lastName: z.string().min(2).max(100),
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(8, 'Password must be at least 8 characters')
-      .max(32, 'Password must be at most 32 characters')
-      .regex(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,32}$/,
-        'Password must contain letters, numbers, and special symbols'
-      ),
-    confirmPassword: z.string()
+    fullName: VALIDATIONS_FACTORY.name,
+    email: VALIDATIONS_FACTORY.email,
+    password: VALIDATIONS_FACTORY.password,
+    confirmPassword: VALIDATIONS_FACTORY.password
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
@@ -39,40 +39,42 @@ function SignUpPage() {
     resolver: zodResolver(signUpSchema),
     mode: 'onChange'
   });
+  const { signUp } = useFirebase();
+  const { showNotification } = useNotifications();
+  const navigate = useNavigate();
+  const { isLoading } = useSelector((state: IRootState) => state.auth);
 
-  const onHandleSignUp = () => {
-    reset();
+  const onHandleSignUp = async (data: SignUpSchema) => {
+    try {
+      await signUp(data.email, data.password, data.fullName);
+      showNotification('Sign up successful');
+      navigate('/folders');
+      reset();
+    } catch (error) {
+      console.error('Sign up error:', error);
+    }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card variant="outlined">
         <CardContent>
+          <img src={Logo} alt="Logo" className="w-20 h-20 mx-auto" />
           <h3 className="text-2xl font-bold text-center">Create Account</h3>
           <p className="text-center text-sm text-gray-400 mb-4">Join us today and get started</p>
 
           <div className="w-full max-w-[400px] py-2">
             <TextField
-              {...register('firstName')}
+              {...register('fullName')}
               margin="dense"
-              label="First Name"
+              label="Full Name"
               variant="outlined"
               type="text"
               fullWidth
               className="!mb-2"
-              error={!!errors.firstName}
-              helperText={errors.firstName?.message}
-            />
-            <TextField
-              {...register('lastName')}
-              margin="dense"
-              label="Second Name"
-              variant="outlined"
-              type="text"
-              fullWidth
-              className="!mb-2"
-              error={!!errors.lastName}
-              helperText={errors.lastName?.message}
+              error={!!errors.fullName}
+              disabled={isLoading}
+              helperText={errors.fullName?.message}
             />
             <TextField
               {...register('email')}
@@ -83,6 +85,7 @@ function SignUpPage() {
               fullWidth
               className="!mb-2"
               error={!!errors.email}
+              disabled={isLoading}
               helperText={errors.email?.message}
             />
             <TextField
@@ -94,6 +97,7 @@ function SignUpPage() {
               fullWidth
               className="!mb-2"
               error={!!errors.password}
+              disabled={isLoading}
               helperText={errors.password?.message}
             />
             <TextField
@@ -105,6 +109,7 @@ function SignUpPage() {
               fullWidth
               className="!mb-2"
               error={!!errors.confirmPassword}
+              disabled={isLoading}
               helperText={errors.confirmPassword?.message}
             />
 
@@ -114,12 +119,13 @@ function SignUpPage() {
                 color="primary"
                 fullWidth
                 disabled={!isValid}
+                loading={isLoading}
                 onClick={handleSubmit(onHandleSignUp)}>
                 Sign Up
               </Button>
               <p className="w-full text-center text-gray-400 mt-4">
                 Already have an account?
-                <Button variant="text">
+                <Button variant="text" disabled={isLoading}>
                   <Link to="/login">Log in</Link>
                 </Button>
               </p>

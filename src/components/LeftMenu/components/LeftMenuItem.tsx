@@ -26,7 +26,6 @@ function LeftMenuItem(props: IProps = { item: { text: '' }, disablePadding: fals
       return (
         <ListItemButton>
           <ListItemText primary={text} />
-
           <Chip label={badge.count} size={badge.size} color={badge.color} variant={badge.variant} />
         </ListItemButton>
       );
