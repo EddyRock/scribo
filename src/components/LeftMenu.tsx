@@ -3,6 +3,8 @@ import LeftMenuItems from '@components/LeftMenu/components/LeftMenuItems.tsx';
 import CreateNewFolderDialog from './LeftMenu/dialogs/CreateNewFolderDialog.tsx';
 
 import { useState } from 'react';
+import { useFirebase, useNotifications } from '@/hooks';
+
 import type { IItem } from '@components/LeftMenu/components/LeftMenuItem.tsx';
 
 const INITIAL_ITEMS: IItem[] = [
@@ -16,16 +18,26 @@ const INITIAL_ITEMS: IItem[] = [
 ];
 
 function LeftMenu() {
+  const { onCreateFolder } = useFirebase();
+  const { showNotification } = useNotifications();
+
   const [search, setSearch] = useState('');
   const [items, setItems] = useState(INITIAL_ITEMS);
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
-  const onCreateNewFolder = () => {
+  const onCreateNewFolder = async (folderName: string = '') => {
+    try {
+      await onCreateFolder(folderName);
+      showNotification('Folder created successfully');
+    } catch (error) {
+      console.error('Error creating folder:', error);
+    }
+
     // There will be logic to create a new folder here
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-between max-w-[250px] h-[100vh] border border-gray-200 border-t-0">
+    <div className="w-full flex flex-col items-center justify-between max-w-[250px] border border-gray-200 border-t-0">
       <div>
         <LeftMenuSearch onUpdateSearch={setSearch} search={search} />
         <LeftMenuItems items={items} onSetSelectedItem={setSelectedItem} />

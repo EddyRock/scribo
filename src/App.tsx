@@ -7,9 +7,11 @@ import { useEffect } from 'react';
 import { useFirebase } from '@hooks/index';
 
 function App() {
-  const { onSetupAuthListener } = useFirebase();
+  const { onSetupAuthListener, onSetupFoldersAndNotes } = useFirebase();
   useEffect(() => {
     const unsubscribe = onSetupAuthListener();
+    onSetupFoldersAndNotes();
+
     return () => unsubscribe();
   }, []);
 

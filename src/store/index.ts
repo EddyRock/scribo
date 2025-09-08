@@ -1,7 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import { authReducer } from './reducers/auth-reducer';
-import { notificationsReducer } from './reducers/notifications-reducer';
+import { authReducer, notificationsReducer, foldersReducer } from './reducers/index';
 
 import type { IAuthState } from './reducers/auth-reducer';
 import type { INotificationState } from './reducers/notifications-reducer';
@@ -14,6 +13,7 @@ export interface IRootState {
 const rootReducer = combineReducers({
   auth: authReducer,
   notifications: notificationsReducer,
+  folders: foldersReducer
 });
 
 export const store = configureStore({

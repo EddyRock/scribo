@@ -11,6 +11,7 @@ const VALIDATIONS_FACTORY = {
       'Password must contain letters, numbers, and special symbols'
     ),
   name: z.string().min(2).max(100),
+  folderName: z.string().min(3).max(100).trim().nonempty()
 };
 
 export default VALIDATIONS_FACTORY;

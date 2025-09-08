@@ -4,7 +4,7 @@ import Header from '@/components/Header/Header';
 
 function Layout() {
   return (
-    <div>
+    <div className="h-[80vh]">
       <Header />
       <div className="flex">
         <LeftMenu />

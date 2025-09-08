@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import VALIDATIONS_FACTORY from '@/services/validations/validations-factory';
+
 import {
   Button,
   Dialog,
@@ -20,7 +22,7 @@ interface IProps {
 }
 
 const dialogSchema = z.object({
-  folderName: z.string().min(3).max(100).trim().nonempty()
+  folderName: VALIDATIONS_FACTORY.folderName
 });
 
 type DialogSchema = z.infer<typeof dialogSchema>;
